@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "AI Studio Auto Rerun",
+  "version": "0.0",
+  "description": "Automatically clicks Rerun when an internal error occurs in Google AI Studio.",
+  "permissions": [],
+  "host_permissions": [
+    "https://aistudio.google.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://aistudio.google.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
