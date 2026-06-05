@@ -11,15 +11,20 @@ const observer = new MutationObserver(() => {
 observer.observe(document.body, { childList: true, subtree: true });
 
 function scanAndFix() {
-    const errors = document.querySelectorAll('.model-error');
+    // Query for the old error class AND the feedback container shown in your screenshot
+    const potentialErrors = document.querySelectorAll('.model-error, ms-prompt-feedback');
     
-    errors.forEach(errorEl => {
+    potentialErrors.forEach(errorEl => {
         // Skip if we've already handled this specific error element
         if (processedErrors.has(errorEl)) return;
 
-        // Verify it's the correct error message
-        const text = errorEl.textContent || errorEl.innerText;
-        if (!text.includes("An internal error has occurred")) return;
+        // Get text and check for either error type
+        const text = errorEl.textContent || errorEl.innerText || "";
+        const isInternalError = text.includes("An internal error has occurred");
+        const isOutputError = text.includes("Output error");
+
+        // If neither error is found, ignore and move on
+        if (!isInternalError && !isOutputError) return;
 
         // Mark as processed immediately so we don't try again
         processedErrors.add(errorEl);
